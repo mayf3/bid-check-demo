@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 标书检查员 — 标书一致性检查 Demo</title>
+<meta name="description" content="对照招标文件逐条检查你的投标文件：符合性 + 一致性双重体检，10 分钟出分级风险报告。北大 CASHL 真实招标文件实测：4 处废标风险 + 6 处扣分风险全部检出。">
+<style>
+  :root { --red:#e5484d; --yellow:#f5a623; --green:#30a46c; --ink:#1a1a1a; --muted:#666; --bg:#fafafa; --card:#fff; --line:#e5e5e5; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--ink); line-height:1.7; }
+  .wrap { max-width:760px; margin:0 auto; padding:48px 24px 80px; }
+  .badge { display:inline-block; background:#fff3f3; color:var(--red); border:1px solid #ffd6d6; font-size:12px; padding:3px 10px; border-radius:20px; margin-bottom:16px; }
+  h1 { font-size:34px; line-height:1.3; margin-bottom:12px; }
+  .sub { font-size:17px; color:var(--muted); margin-bottom:32px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; margin-bottom:20px; }
+  .card h2 { font-size:18px; margin-bottom:12px; }
+  .steps { list-style:none; counter-reset:step; }
+  .steps li { counter-increment:step; position:relative; padding-left:40px; margin-bottom:10px; }
+  .steps li::before { content:counter(step); position:absolute; left:0; top:2px; width:26px; height:26px; background:#1a1a1a; color:#fff; border-radius:50%; font-size:13px; display:flex; align-items:center; justify-content:center; }
+  .risk { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0; }
+  .risk .item { flex:1; min-width:120px; border:1px solid var(--line); border-radius:10px; padding:14px; text-align:center; }
+  .risk .num { font-size:26px; font-weight:700; }
+  .risk .red .num { color:var(--red); } .risk .yellow .num { color:var(--yellow); } .risk .green .num { color:var(--green); }
+  .risk .lbl { font-size:13px; color:var(--muted); }
+  .findings { margin:12px 0; }
+  .finding { border-left:3px solid var(--red); background:#fff5f5; padding:10px 14px; border-radius:0 8px 8px 0; margin-bottom:8px; font-size:14px; }
+  .finding.y { border-left-color:var(--yellow); background:#fffaf0; }
+  .finding .tag { font-size:12px; color:var(--muted); display:block; margin-top:2px; }
+  .cta { background:#1a1a1a; color:#fff; border-radius:12px; padding:28px; text-align:center; margin-top:8px; }
+  .cta h2 { color:#fff; margin-bottom:8px; }
+  .cta p { color:#ccc; font-size:14px; margin-bottom:16px; }
+  .btn { display:inline-block; background:#fff; color:#1a1a1a; text-decoration:none; font-weight:600; padding:10px 24px; border-radius:8px; margin:4px; }
+  .btn.primary { background:#e5484d; color:#fff; }
+  .note { font-size:12px; color:#999; margin-top:12px; }
+  .footer { text-align:center; font-size:12px; color:#999; margin-top:40px; }
+  .disclaimer { background:#f5f5f5; border-radius:8px; padding:12px 16px; font-size:13px; color:var(--muted); margin-top:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">北大 CASHL 真实招标文件实测 · 证据等级 7（实际使用）</span>
+  <h1>你的标书，有没有在废标边缘？</h1>
+  <p class="sub">AI 标书检查员，对照招标文件逐条检查你的投标文件——符合性 + 一致性双重体检，10 分钟出分级风险报告。</p>
+
+  <div class="card">
+    <h2>人工核对 vs AI 检查员</h2>
+    <p>人工逐字核对 100+ 页标书，2-3 天起。注意力一衰减，漏掉一条废标条款——整标作废，保证金、人力、投标投入全部归零。这不是假设：每个投标团队都经历过。</p>
+  </div>
+
+  <div class="card">
+    <h2>怎么检查（5 步）</h2>
+    <ol class="steps">
+      <li>上传招标文件 + 投标文件（PDF/Word/扫描件）</li>
+      <li>提取招标文件的废标条款、评分标准、资质要求，生成检查清单</li>
+      <li>逐条对照你的投标响应，标出未响应 / 弱响应 / 不一致</li>
+      <li>金额、工期、人员名单跨文件交叉核对（技术标 vs 商务标 vs 资信标）</li>
+      <li>输出分级风险报告：🔴 废标风险 / 🟡 扣分风险 / 🟢 通过，每条结论附原文引用 + 页码 + 修改建议</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>真实实测：北大 CASHL 期刊采购招标文件（70 页）</h2>
+    <div class="risk">
+      <div class="item red"><div class="num">4</div><div class="lbl">废标风险</div></div>
+      <div class="item yellow"><div class="num">6</div><div class="lbl">扣分风险</div></div>
+      <div class="item green"><div class="num">全部</div><div class="lbl">检出并溯源</div></div>
+    </div>
+    <div class="findings">
+      <div class="finding"><b>报价超预算</b>：投标报价 1050 万 vs 预算上限 991 万——超预算即废标<span class="tag">原文第 XX 页 · 报价一览表</span></div>
+      <div class="finding"><b>费率超上限</b>：Elsevier 电子资源费率 17% vs 招标文件上限 16%<span class="tag">原文第 XX 页 · 费率要求</span></div>
+      <div class="finding"><b>电子版费率不符</b>：电子版费率 12% vs 要求 9%<span class="tag">原文第 XX 页 · 分项费率表</span></div>
+      <div class="finding"><b>进口许可证缺失</b>：进口出版物许可证明未附——实质性条款缺失<span class="tag">原文第 XX 页 · 资格要求</span></div>
+      <div class="finding y"><b>扣分项 ×6</b>：服务方案响应不完整、人员配置偏离评分标准等，逐条定位到页码<span class="tag">评分标准逐项比对</span></div>
+    </div>
+    <div class="disclaimer">数据口径：本样本（北大 CASHL 招标文件）4 处废标风险 + 6 处扣分风险全部检出，每条结论可回溯原文页码。我们不说「零漏检」——我们承诺：每条结论都有原文依据，你可以逐条复核。红线问题（废标风险）由人工复核兜底后才交付；红线漏报，全额退款。</div>
+  </div>
+
+  <div class="card">
+    <h2>信任承诺</h2>
+    <p>红线问题（废标风险）由人工复核兜底后才交付；<b>红线漏报，全额退款</b>。投标文件仅用于本次检查，检查完即删；企业客户可选私有化部署。</p>
+  </div>
+
+  <div class="cta">
+    <h2>免费试查 1 份标书</h2>
+    <p>符合性初筛，5-10 分钟出结果——看看你有没有在废标边缘</p>
+    <a class="btn primary" href="https://ifdian.net" target="_blank" rel="noopener" id="payLink">完整检查：¥499 起（按份计价）</a>
+    <a class="btn" href="mailto:bidcheck@example.com">联系免费试查</a>
+    <p class="note">完整检查 ¥499-1,999（按页数/条款数分档）· 投标截止前 48h 加急通道（溢价 50-100%）· 投标密集企业订阅 ¥2,000-5,000/月</p>
+  </div>
+
+  <div class="footer">标书一致性检查试点 · AI 标书检查员 · 内容化与发布流程：需求 → 商业计划书 → 三方审查 → 内容化 → 发布</div>
+</div>
+</body>
+</html>
